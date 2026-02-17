@@ -1,0 +1,95 @@
+{
+  "name": "Agent Swarm (Claude Only) | OpenClaw Skill",
+  "description": "LLM routing and subagent delegation for OpenClaw using Claude models only. Routes each task to the right Claude model (Haiku, Sonnet, Opus), spawns subagents, and reduces API costs by using cheaper models for simple tasks. Supports parallel tasks (spawn --json --multi).",
+  "version": "1.0.0",
+  "author": "Austin",
+  "default_model": "anthropic/claude-3-haiku",
+  "models": [
+    {
+      "id": "anthropic/claude-3-haiku",
+      "alias": "Claude-Haiku",
+      "tier": "FAST",
+      "provider": "anthropic",
+      "input_cost_per_m": 0.25,
+      "output_cost_per_m": 1.25,
+      "context_window": 200000,
+      "capabilities": ["text", "code"],
+      "use_for": ["fast responses", "simple tasks", "monitoring", "status checks", "summaries"]
+    },
+    {
+      "id": "anthropic/claude-3.5-sonnet",
+      "alias": "Claude-Sonnet-3.5",
+      "tier": "CODE",
+      "provider": "anthropic",
+      "input_cost_per_m": 3.00,
+      "output_cost_per_m": 15.00,
+      "context_window": 200000,
+      "capabilities": ["text", "code", "reasoning", "vision"],
+      "use_for": ["code generation", "debugging", "refactoring", "implementation"]
+    },
+    {
+      "id": "anthropic/claude-sonnet-4",
+      "alias": "Claude-Sonnet-4",
+      "tier": "QUALITY",
+      "provider": "anthropic",
+      "input_cost_per_m": 3.00,
+      "output_cost_per_m": 15.00,
+      "context_window": 200000,
+      "capabilities": ["text", "code", "reasoning", "vision"],
+      "use_for": ["complex code", "architecture", "comprehensive solutions", "high-quality output"]
+    },
+    {
+      "id": "anthropic/claude-3-opus",
+      "alias": "Claude-Opus",
+      "tier": "QUALITY",
+      "provider": "anthropic",
+      "input_cost_per_m": 15.00,
+      "output_cost_per_m": 75.00,
+      "context_window": 200000,
+      "capabilities": ["text", "code", "reasoning", "vision"],
+      "use_for": ["most complex tasks", "architectural design", "deep reasoning", "fallback for difficult problems"]
+    }
+  ],
+  "routing_rules": {
+    "FAST": {
+      "primary": "anthropic/claude-3-haiku",
+      "fallback": ["anthropic/claude-3-haiku"],
+      "keywords": ["check", "get", "list", "show", "status", "monitor", "fetch", "simple", "quick"]
+    },
+    "REASONING": {
+      "primary": "anthropic/claude-3.5-sonnet",
+      "fallback": ["anthropic/claude-3-haiku"],
+      "keywords": ["reason", "prove", "logic", "analyze", "derive", "math", "think", "step by step"]
+    },
+    "CREATIVE": {
+      "primary": "anthropic/claude-3.5-sonnet",
+      "fallback": ["anthropic/claude-3-haiku"],
+      "keywords": ["creative", "write", "story", "design", "UI", "UX", "frontend", "website", "style", "artistic"]
+    },
+    "RESEARCH": {
+      "primary": "anthropic/claude-3-haiku",
+      "fallback": ["anthropic/claude-3-haiku"],
+      "keywords": ["research", "find", "search", "lookup", "web", "information", "fact", "review"]
+    },
+    "CODE": {
+      "primary": "anthropic/claude-3.5-sonnet",
+      "fallback": ["anthropic/claude-3-haiku", "anthropic/claude-sonnet-4"],
+      "keywords": ["code", "function", "class", "debug", "fix", "implement", "refactor", "lint", "test"]
+    },
+    "QUALITY": {
+      "primary": "anthropic/claude-sonnet-4",
+      "fallback": ["anthropic/claude-3.5-sonnet", "anthropic/claude-3-opus"],
+      "keywords": ["complex", "architecture", "design", "system", "comprehensive", "thorough"]
+    },
+    "COMPLEX": {
+      "primary": "anthropic/claude-sonnet-4",
+      "fallback": ["anthropic/claude-3.5-sonnet", "anthropic/claude-3-opus"],
+      "keywords": ["complex", "architecture", "design", "system"]
+    },
+    "VISION": {
+      "primary": "anthropic/claude-3.5-sonnet",
+      "fallback": ["anthropic/claude-sonnet-4"],
+      "keywords": ["image", "picture", "photo", "screenshot", "visual", "analyze image"]
+    }
+  }
+}

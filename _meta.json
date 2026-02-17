@@ -1,0 +1,26 @@
+{
+  "name": "agent-swarm-claude-only",
+  "displayName": "Agent Swarm (Claude Only) | OpenClaw Skill",
+  "version": "1.0.0",
+  "description": "LLM routing and subagent delegation using Claude models only. Routes tasks to efficient Claude models (Haiku, Sonnet, Opus) based on complexity. Requires Anthropic API key configured in OpenClaw.",
+  "author": "Austin",
+  "requires": {
+    "env": [
+      "OPENCLAW_HOME"
+    ],
+    "platform": {
+      "openclaw": {
+        "config": {
+          "anthropic_api_key": "Required: Anthropic API key must be configured in OpenClaw platform settings",
+          "openclaw_json": "Reads tools.exec.host and tools.exec.node from openclaw.json (located via OPENCLAW_HOME or ~/.openclaw/openclaw.json)"
+        }
+      }
+    }
+  },
+  "fileAccess": {
+    "read": [
+      "openclaw.json (tools.exec.host and tools.exec.node only)"
+    ],
+    "write": []
+  }
+}
