@@ -80,13 +80,53 @@ python scripts/router.py spawn --json --multi "fix bug and write poem"
 python scripts/router.py models
 ```
 
-## Config basics
+## Config Reference
 
-Edit `config.json` to change routing:
+Edit `config.json` to change routing. All fields are optional and fall back to defaults.
 
-- `default_model` = orchestrator default (Claude Haiku)
-- `routing_rules.<TIER>.primary` = main model for tier
-- `routing_rules.<TIER>.fallback` = backups
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `default_model` | string | `anthropic/claude-3-haiku` | Orchestrator default model |
+| `models[].id` | string | -- | Full model identifier (`anthropic/...`) |
+| `models[].alias` | string | -- | Human-readable name |
+| `models[].tier` | string | -- | Routing tier (FAST, CODE, QUALITY, etc.) |
+| `models[].input_cost_per_m` | float | -- | Input cost per million tokens |
+| `models[].output_cost_per_m` | float | -- | Output cost per million tokens |
+| `routing_rules.<TIER>.primary` | string | -- | Primary model for this tier |
+| `routing_rules.<TIER>.fallback` | string[] | `[]` | Fallback models in priority order |
+| `routing_rules.<TIER>.keywords` | string[] | `[]` | Keywords that trigger this tier |
+
+### Tiers
+
+| Tier | Primary Model | Use Case |
+|------|---------------|----------|
+| FAST | Claude Haiku | Quick lookups, status checks, summaries |
+| REASONING | Claude Sonnet 3.5 | Logic, math, step-by-step analysis |
+| CREATIVE | Claude Sonnet 3.5 | Writing, UI/UX design, frontend |
+| RESEARCH | Claude Haiku | Fact-finding, information lookup |
+| CODE | Claude Sonnet 3.5 | Code generation, debugging, refactoring |
+| QUALITY | Claude Sonnet 4 | Complex architecture, comprehensive solutions |
+| VISION | Claude Sonnet 3.5 | Image analysis, screenshots |
+
+## Usage Examples
+
+### Classify a task without spawning
+```bash
+python3 scripts/router.py classify "refactor the database module"
+# Output: CODE (confidence: 0.85)
+```
+
+### Estimate API cost
+```bash
+python3 scripts/router.py cost "write a REST API"
+# Output: Estimated cost for CODE tier using anthropic/claude-3.5-sonnet
+```
+
+### Show scoring breakdown
+```bash
+python3 scripts/router.py score "design a microservices architecture"
+# Output: Detailed keyword matches and tier weights
+```
 
 ## Security
 
