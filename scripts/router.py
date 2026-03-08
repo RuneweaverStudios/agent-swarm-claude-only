@@ -53,20 +53,20 @@ def validate_task_string(task):
     if '\x00' in task:
         raise ValueError("Task string contains null bytes")
     
-    # Task strings are user input that will be passed to LLMs - allow most characters
-    # but log warnings for suspicious patterns
+    # Reject prompt-injection patterns (script tags, protocols, event handlers)
+    # so malicious task strings are not passed to sub-agent LLMs.
     suspicious_patterns = [
-        r'<script[^>]*>',  # Script tags
-        r'javascript:',     # JavaScript protocol
-        r'on\w+\s*=',       # Event handlers
+        (r'<script[^>]*>', "script tags"),
+        (r'javascript:', "javascript: protocol"),
+        (r'on\w+\s*=', "event-handler attributes (e.g. onclick=)"),
     ]
-    
-    for pattern in suspicious_patterns:
+    for pattern, name in suspicious_patterns:
         if re.search(pattern, task, re.IGNORECASE):
-            # Log warning but allow (LLM should handle this safely)
-            # In production, you might want stricter validation
-            pass
-    
+            raise ValueError(
+                f"Task string contains disallowed pattern ({name}). "
+                "Rephrase the task without executable or markup-injection patterns."
+            )
+
     return task.strip()
 
 

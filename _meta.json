@@ -1,19 +1,26 @@
 {
   "schema": "openclaw.skill.v1",
   "name": "agent-swarm-claude-only",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "displayName": "Agent Swarm (Claude Only) | OpenClaw Skill",
-  "description": "LLM routing and subagent delegation using Claude models only. Routes tasks to efficient Claude models (Haiku, Sonnet, Opus) based on complexity. Requires Anthropic API key configured in OpenClaw.",
+  "description": "LLM routing and subagent delegation using Anthropic Claude models exclusively. Routes tasks to efficient Claude models (Haiku for fast tasks, Sonnet for code/quality, Opus for complex architecture) based on tier classification. Rejects prompt-injection patterns in task strings. Supports parallel multi-task splitting.",
   "author": "Austin",
+  "license": "MIT",
+  "homepage": "https://github.com/RuneweaverStudios/agent-swarm-claude-only",
   "tags": [
     "routing",
     "orchestration",
     "subagents",
     "claude",
-    "openclaw"
+    "anthropic",
+    "openclaw",
+    "llm-routing",
+    "cost-optimization",
+    "prompt-injection-protection"
   ],
   "platform": "openclaw",
   "requires": {
+    "python": ">=3.8",
     "optionalEnv": [
       "OPENCLAW_HOME"
     ],
@@ -31,5 +38,15 @@
       "openclaw.json (tools.exec.host and tools.exec.node only)"
     ],
     "write": []
-  }
+  },
+  "commands": {
+    "default": "Show the default orchestrator model",
+    "classify": "Classify a task into a routing tier",
+    "spawn": "Generate sessions_spawn parameters for a task",
+    "models": "List all configured Claude models",
+    "score": "Show detailed scoring breakdown",
+    "cost": "Estimate API cost for a task"
+  },
+  "tiers": ["FAST", "REASONING", "CREATIVE", "RESEARCH", "CODE", "QUALITY", "VISION"],
+  "basedOn": "agent-swarm (adapted for Claude-only routing)"
 }

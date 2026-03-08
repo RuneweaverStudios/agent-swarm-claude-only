@@ -2,7 +2,7 @@
 name: agent-swarm-claude-only
 displayName: Agent Swarm (Claude Only) | OpenClaw Skill
 description: "IMPORTANT: Anthropic API key required. Routes tasks to efficient Claude models and always delegates work through sessions_spawn."
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Agent Swarm (Claude Only) | OpenClaw Skill
@@ -128,8 +128,8 @@ All config patches are validated before being returned. The orchestrator should 
 
 ### Prompt Injection Mitigation
 
-Task strings are passed to `sessions_spawn` and then to sub-agents. While the router validates input format, prompt injection protection is primarily the responsibility of:
-1. The orchestrator (validating task strings)
+The router **rejects** task strings that contain prompt-injection patterns (e.g. `<script>`, `javascript:`, `onclick=`). Rejected tasks raise `ValueError`; the orchestrator should surface a clear message. Additional layers:
+1. The orchestrator (validating task strings and handling rejections)
 2. The sub-agent LLM (resisting prompt injection)
 3. The OpenClaw platform (sanitizing `sessions_spawn` inputs)
 

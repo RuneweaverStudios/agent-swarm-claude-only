@@ -7,7 +7,7 @@
 
 **LLM routing and subagent delegation using Claude models only.** Routes each task to the right Claude model (Haiku, Sonnet, Opus), spawns subagents, and reduces API costs by using cheaper models for simple tasks. **Parallel tasks:** one message can spawn multiple subagents at once (e.g. "fix the bug and write a poem" → code + creative in parallel).
 
-**v1.0.0 — Claude-only routing for Anthropic API key users.** Efficiently routes tasks to Claude Haiku (fast), Claude Sonnet (code/quality), and Claude Opus (complex). **Source:** Based on agent-swarm skill, optimized for Claude models.
+**v1.1.0 — Claude-only routing for Anthropic API key users. Rejects prompt-injection patterns (v1.1.0+).** Efficiently routes tasks to Claude Haiku (fast), Claude Sonnet (code/quality), and Claude Opus (complex). **Source:** Based on agent-swarm skill, optimized for Claude models.
 
 Agent Swarm (Claude Only) | OpenClaw Skill routes your OpenClaw tasks to the best Claude model for the job and delegates work to subagents. You save API costs (orchestrator stays on Claude Haiku; only the task runs on the matched model) and get better results—Claude Sonnet for code, Claude Opus for complex tasks.
 
@@ -229,6 +229,12 @@ The router reads `openclaw.json` **only** to inspect `tools.exec.host` and `tool
 
 - **`config.json`** — Model list and `routing_rules` per tier; `default_model` (e.g. `anthropic/claude-3-haiku`) for session default and orchestrator.
 - Router loads `config.json` from the parent of `scripts/` (skill root).
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for full version history and divergence notes from the main agent-swarm skill.
 
 ---
 
