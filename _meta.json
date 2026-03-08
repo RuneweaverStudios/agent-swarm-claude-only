@@ -5,7 +5,13 @@
   "displayName": "Agent Swarm (Claude Only) | OpenClaw Skill",
   "description": "LLM routing and subagent delegation using Claude models only. Routes tasks to efficient Claude models (Haiku, Sonnet, Opus) based on complexity. Requires Anthropic API key configured in OpenClaw.",
   "author": "Austin",
-  "tags": [],
+  "tags": [
+    "routing",
+    "orchestration",
+    "subagents",
+    "claude",
+    "openclaw"
+  ],
   "platform": "openclaw",
   "requires": {
     "env": [
