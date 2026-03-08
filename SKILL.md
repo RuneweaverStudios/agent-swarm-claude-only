@@ -195,3 +195,14 @@ The router **rejects** task strings that contain prompt-injection patterns (e.g.
 - This skill does not expose gateway secrets.
 - Use `gateway-guard` separately for gateway/auth management.
 - The router does not execute arbitrary code or modify files outside of config patches.
+
+## Claude Model Cost Comparison
+
+| Model | Input (per 1M tokens) | Output (per 1M tokens) | Best For |
+|-------|----------------------|------------------------|----------|
+| Claude 3 Haiku | $0.25 | $1.25 | Fast tasks, orchestrator, simple queries |
+| Claude 3.5 Sonnet | $3.00 | $15.00 | Code generation, quality writing, analysis |
+| Claude 3 Opus | $15.00 | $75.00 | Complex architecture, multi-step reasoning |
+| Claude 3.5 Haiku | $1.00 | $5.00 | Balanced speed/quality for moderate tasks |
+
+**Cost savings:** By routing simple tasks to Haiku ($0.25/M) instead of Opus ($15/M), you save up to 98% on those requests while keeping quality where it matters.

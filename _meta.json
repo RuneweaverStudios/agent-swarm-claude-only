@@ -47,6 +47,15 @@
     "score": "Show detailed scoring breakdown",
     "cost": "Estimate API cost for a task"
   },
-  "tiers": ["FAST", "REASONING", "CREATIVE", "RESEARCH", "CODE", "QUALITY", "VISION"],
-  "basedOn": "agent-swarm (adapted for Claude-only routing)"
+  "tiers": [
+    "FAST",
+    "REASONING",
+    "CREATIVE",
+    "RESEARCH",
+    "CODE",
+    "QUALITY",
+    "VISION"
+  ],
+  "basedOn": "agent-swarm (adapted for Claude-only routing)",
+  "main": "scripts/router.py"
 }
